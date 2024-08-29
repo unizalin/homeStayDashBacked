@@ -1,16 +1,13 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "start": "node ./bin/www",
     "start:dev": "NODE_ENV=dev node ./bin/www",
     "start:pro": "NODE_ENV=production node ./bin/www",
     "dev": "nodemon ./bin/www"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@line/bot-sdk": "^9.2.2",
     "bcryptjs": "^2.4.3",
