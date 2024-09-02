@@ -1,8 +1,4 @@
-var createError = require("http-errors");
 var express = require("express");
-const dotenv = require("dotenv");
-dotenv.config({ path: "./config.env" });
-var line = require('@line/bot-sdk');
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
@@ -12,7 +8,7 @@ const cors = require("cors");
 var indexRouter = require("./routes/index");
 var guestRouter = require("./routes/guest");
 var lineBotRouter = require("./routes/lineBot");
-
+console.log('lineBotRouter',lineBotRouter)
 var app = express();
 
 // 程式出現重大錯誤時 (不能上正式機 被看到會反破解知道用了哪些套件)

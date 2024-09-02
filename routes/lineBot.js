@@ -1,6 +1,8 @@
 // routes/lineBot.js
 var express = require("express");
 var router = express.Router();
+const dotenv = require("dotenv");
+dotenv.config({ path: "./config.env" });
 var line = require("@line/bot-sdk");
 
 // LINE bot configuration
@@ -8,16 +10,13 @@ const config = {
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.LINE_CHANNEL_SECRET,
 };
-
+console.log('Line bot config',config)
 const client = new line.Client(config);
 
-// Middleware to validate requests from LINE platform
-router.use(line.middleware(config));
-
-// Handle webhook events
-router.post("/", (req, res) => {
-  const events = req.body.events;
-
+// LINE webhook route
+router.post("/", line.middleware(config), (req, res) => {
+  const events = req.body.events
+  console.log('linebot events',events);
   events.forEach(async (event) => {
     if (event.type === "message" && event.message.type === "text") {
       try {
@@ -35,3 +34,4 @@ router.post("/", (req, res) => {
 });
 
 module.exports = router;
+
