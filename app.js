@@ -1,17 +1,17 @@
-var createError = require("http-errors");
+// var createError = require("http-errors");
 var express = require("express");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 var line = require('@line/bot-sdk');
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+// var path = require("path");
+// var cookieParser = require("cookie-parser");
+// var logger = require("morgan");
+// const bodyParser = require("body-parser");
+// const cors = require("cors");
 
 
-var indexRouter = require("./routes/index");
-var guestRouter = require("./routes/guest");
+// var indexRouter = require("./routes/index");
+// var guestRouter = require("./routes/guest");
 
 
 const config = {
@@ -22,56 +22,56 @@ const config = {
 const client = new line.Client(config);
 var app = express();
 
-app.post('/webhook', line.middleware(config), (req, res) => {
+app.post('/webhook', line.middleware(config), async (req, res) => {
   const events = req.body.events;
-  events.forEach(async(event) => {
-    if(event.type === 'message' && event.message.type ==='text'){
-      try {
+  try {
+    for (const event of events) {
+      if (event.type === 'message' && event.message.type === 'text') {
         await client.replyMessage(event.replyToken, {
           type: 'text',
           text: event.message.text,
         });
-        res.status(200).send('OK');
-      } catch (err) {
-        console.error('Error:', err);
-        res.status(500).end();
       }
     }
-  });
-})
-
-// 程式出現重大錯誤時 (不能上正式機 被看到會反破解知道用了哪些套件)
-process.on('uncaughtException', err => {
-  // 記錄錯誤下來，等到服務都處理完後，停掉該 process
-	console.error('出事拉！')
-	console.error(err.name);
-  console.log(err)
-  console.error(err.message);
-	console.error(err.stack);
-
-	process.exit(1); //停掉該 process
+    res.status(200).send('OK');
+  } catch (err) {
+    console.error('Error:', err);
+    res.status(500).end();
+  }
 });
+
+// // 程式出現重大錯誤時 (不能上正式機 被看到會反破解知道用了哪些套件)
+// process.on('uncaughtException', err => {
+//   // 記錄錯誤下來，等到服務都處理完後，停掉該 process
+// 	console.error('出事拉！')
+// 	console.error(err.name);
+//   console.log(err)
+//   console.error(err.message);
+// 	console.error(err.stack);
+
+// 	process.exit(1); //停掉該 process
+// });
 
 
 
 require("./connections");
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
+// app.set("views", path.join(__dirname, "views"));
+// app.set("view engine", "ejs");
 
-app.use(logger("dev"));
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+// app.use(logger("dev"));
+// app.use(cors());
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+// app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, "public")));
+// app.use(bodyParser.json()); // for parsing application/json
+// app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 
-app.use("/", indexRouter);
-app.use("/guest", guestRouter);
+// app.use("/", indexRouter);
+// app.use("/guest", guestRouter);
 // app.use('/webhook', lineBotRouter);
 
 
