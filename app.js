@@ -4,6 +4,10 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const dotenv = require("dotenv");
+dotenv.config({ path: "./config.env" });
+var line = require("@line/bot-sdk");
+
 
 var indexRouter = require("./routes/index");
 var guestRouter = require("./routes/guest");
@@ -11,6 +15,15 @@ var lineBotRouter = require("./routes/lineBot");
 console.log('lineBotRouter',lineBotRouter)
 var app = express();
 
+// LINE bot configuration
+const config = {
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
+  channelSecret: process.env.LINE_CHANNEL_SECRET,
+};
+console.log('Line bot config',config)
+const client = new line.Client(config);
+
+app.use('/webhook',line.middleware(config), lineBotRouter);
 // 程式出現重大錯誤時 (不能上正式機 被看到會反破解知道用了哪些套件)
 process.on('uncaughtException', err => {
   // 記錄錯誤下來，等到服務都處理完後，停掉該 process
@@ -39,7 +52,6 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 app.use("/", indexRouter);
 app.use("/guest", guestRouter);
-app.use('/webhook', lineBotRouter);
   
 // 404
 app.use(function(req,res,next){
