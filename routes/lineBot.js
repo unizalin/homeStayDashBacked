@@ -15,10 +15,12 @@ console.log('Line bot config',config)
 const client = new line.Client(config);
 
 // LINE webhook route
-router.post("/", line.middleware(config), (req, res) => {
-  const events = req.body.events
-  console.log('linebot events',events);
-  events.forEach(handleEvent);  // 處理每個事件
+router.post("/", line.middleware(config), async (req, res) => {
+  const events = req.body.events;
+  console.log('linebot events', events);
+
+  // 使用 Promise.all 確保每個事件都正確處理
+  await Promise.all(events.map(handleEvent));
 });
 
 async function handleEvent(event) {
@@ -32,21 +34,25 @@ async function handleEvent(event) {
   // 根據不同的關鍵字呼叫不同的 API
   switch (true) {
     case /新增客人|\/addc/i.test(userMessage):
-      const replyMessage = await linebotController.addCustomer(userMessage);  // 呼叫控制器中的邏輯
+      const replyMessage = await linebotController.addCustomer(userMessage);
       await client.replyMessage(event.replyToken, {
         type: 'text',
         text: replyMessage
       });
-
+      break;  // 確保離開 switch
+  
     case /新聞/.test(userMessage):
       return callNewsAPI(event.replyToken);  // 呼叫新聞 API
-
+      break;
+  
     case /股票/.test(userMessage):
       return callStockAPI(event.replyToken);  // 呼叫股票 API
-
+      break;
+  
     default:
       return replyDefaultMessage(event.replyToken);  // 回傳預設訊息
   }
+  
 }
 
 module.exports = router;
