@@ -21,7 +21,7 @@ router.post("/", line.middleware(config), (req, res) => {
   events.forEach(handleEvent);  // 處理每個事件
 });
 
-async function handEvent(event) {
+async function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
     // 非文字訊息，不處理
     return Promise.resolve(null);
