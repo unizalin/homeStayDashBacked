@@ -14,7 +14,7 @@ const addCustomer = async (userMessage) => {
   // 創建新的客人資料
   const newGuest = await Guest.create(data)
   try {
-    await newCustomer.save();  // 儲存到資料庫
+    await newGuest.save();  // 儲存到資料庫
     return `客人 ${name} 已新增，電話號碼為 ${phonenumber}`;
   } catch (error) {
     console.error('Error saving to MongoDB:', error);

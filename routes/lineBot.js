@@ -31,7 +31,7 @@ async function handEvent(event) {
 
   // 根據不同的關鍵字呼叫不同的 API
   switch (true) {
-    case /新增客人|\/addC/i.test(userMessage):
+    case /新增客人|\/addc/i.test(userMessage):
       const replyMessage = await linebotController.addCustomer(userMessage);  // 呼叫控制器中的邏輯
       await client.replyMessage(event.replyToken, {
         type: 'text',
