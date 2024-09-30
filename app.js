@@ -8,11 +8,9 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 var line = require("@line/bot-sdk");
 
-
 var indexRouter = require("./routes/index");
 var guestRouter = require("./routes/guest");
 var lineBotRouter = require("./routes/lineBot");
-console.log('lineBotRouter',lineBotRouter)
 
 var app = express();
 // LINE bot configuration
@@ -20,7 +18,6 @@ const config = {
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.LINE_CHANNEL_SECRET,
 };
-console.log('Line bot config',config)
 
 // Middleware to capture raw request body
 app.use(express.json({ verify: (req, res, buf) => { req.rawBody = buf } }));
