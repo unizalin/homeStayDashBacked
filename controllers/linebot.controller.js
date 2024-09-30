@@ -20,7 +20,7 @@ const addCustomer = async (userMessage) => {
 
   try {
     await newGuest.save();
-    return `客人 ${name} 已成功新增，電話號碼為 ${phonenumber}`;
+    return `客人 ${name} 已成功新增，電話號碼為 ${phoneNumber}`;
   } catch (error) {
     console.error('Error saving customer:', error);
     return '新增失敗，請稍後再試。';
