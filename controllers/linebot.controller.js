@@ -9,10 +9,10 @@ const addCustomer = async (userMessage) => {
   console.log('userMessage',userMessage)
   console.log('parts',parts)
   const name = parts[1];
-  const phonenumber = parts[2];
+  const phoneNumber = parts[2];
   const data = {name, phoneNumber}
 
-  if (!data.name || !data.phonenumber) {
+  if (!data.name || !data.phoneNumber) {
     return '格式不正確，請使用 /add 姓名 電話號碼';
   }
   console.log('data',data)
