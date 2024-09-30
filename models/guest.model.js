@@ -11,7 +11,7 @@ const guestSchema = new mongoose.Schema({
     sex:{
       type: String,
       enum:["male","female"],
-      default: male,
+      default: "male",
     },
     remarks:{
       type: String,
